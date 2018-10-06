@@ -24,6 +24,11 @@ services:
 
   web2:
     image: eugenmayer/whoami:multiple
+    labels:
+      traefik.test90.port: 90
+      traefik.test90.frontend.rule: 'Host: 90.docker.lan'
+      traefik.test110.port: 110
+      traefik.test110.frontend.rule: 'Host: 110.docker.lan'
 
 volumes:
   acme:
