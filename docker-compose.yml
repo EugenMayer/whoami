@@ -1,0 +1,34 @@
+# that is just a test-setup for development of the image and different tests - change it for your needs
+version: "2"
+
+services:
+  traefik:
+    image: eugenmayer/traefik
+    environment:
+      TRAEFIK_DOCKER_ENABLE: 'true'
+      TRAEFIK_DOCKER_DOMAIN: 'docker.lan'
+      TRAEFIK_ADMIN_ENABLE: 'true'
+    ports:
+      - 80:8080 # access your lb here, so http://web1.docker-image-traefik.docker.lan
+      - 443:8443
+      - 8000:8000 # admin backend unter http://localhost:8000
+    volumes:
+      - certs:/mnt/certs
+      - filestorage:/mnt/filestorage
+      - acme:/mnt/acme
+      # mount our docker socket so our docker containers can be discovered
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  web1: # upstream/frontend 1: http://web1.docker-image-traefik.docker.lan
+    image: eugenmayer/whoami:single
+
+  web2:
+    image: eugenmayer/whoami:multiple
+
+volumes:
+  acme:
+    driver: local
+  certs:
+    driver: local
+  filestorage:
+    driver: local

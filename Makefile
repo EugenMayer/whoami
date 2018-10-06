@@ -15,3 +15,5 @@ image:
 
 push:
 	docker push	eugenmayer/whoami
+	docker push eugenmayer/whoami:single
+	docker push eugenmayer/whoami:multiple
