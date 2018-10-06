@@ -1,12 +1,36 @@
 # whoami
 
-Tiny Go webserver that prints os information and HTTP request to output
+Tiny Go webserver that prints os information and HTTP request to output for tests of any like.
+Usually to test load-balancer upstream setup or for example setup of such.
 
+Includes a docker-image [eugenmayer/whoami](https://hub.docker.com/r/eugenmayer/whoami) 
+ - running one single service (port 80) [eugenmayer/whoami:single](https://hub.docker.com/r/eugenmayer/whoami)
+ - running multiple service (port 80,90,100) [eugenmayer/whoami:multiple](https://hub.docker.com/r/eugenmayer/whoami)
+
+This way you can test single upstream server per docker image or multi-service upstreams, e.g. test segments with traefik and other load-balancers or whatever you build you example with.
+
+## build
+
+    make image 
+
+## run
+```
+docker run -p 80:80 eugenmayer/whoami:single
+# access
+wget http://localhost:80
+```
+
+or the multi-service variant using 
+```    
+    docker run -p 80:80 -p 90:90 -p 100:100 eugenmayer/whoami:multiple
+    # access
+    wget http://localhost:80
+    wget http://localhost:90
+    wget http://localhost:100
+```
+
+The response looks like this            
 ```sh
-$ docker run -d -P --name iamfoo containous/whoami
-$ docker inspect --format '{{ .NetworkSettings.Ports }}'  iamfoo
-map[80/tcp:[{0.0.0.0 32769}]]
-$ curl "http://0.0.0.0:32769"
 Hostname :  6e0030e67d6a
 IP :  127.0.0.1
 IP :  ::1

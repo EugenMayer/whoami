@@ -6,7 +6,20 @@ RUN make dependencies
 RUN make build
 
 # Create a minimal container to run a Golang static binary
-FROM scratch
+FROM alpine as single
 COPY --from=builder /go/src/github.com/containous/whoami/whoami .
 ENTRYPOINT ["/whoami"]
 EXPOSE 80
+
+# Create a minimal container to run a Golang static binary
+FROM single as multiple
+RUN apk add --update supervisor \
+ && rm  -rf /tmp/* /var/cache/apk/* \
+ && mkdir -p /etc/supervisor/conf.d/
+
+ADD supervisor/supervisord.conf /etc/
+ADD supervisor/conf.d/ /etc/supervisor/conf.d/
+ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+EXPOSE 80
+EXPOSE 90
+EXPOSE 100

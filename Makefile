@@ -9,4 +9,9 @@ dependencies:
 	dep ensure -v
 
 image:
-	docker build -t containous/whoami .
+	docker build --target single -t eugenmayer/whoami .
+	docker tag eugenmayer/whoami eugenmayer/whoami:single
+	docker build --target multiple -t eugenmayer/whoami:multiple .
+
+push:
+	docker push	eugenmayer/whoami
