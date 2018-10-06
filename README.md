@@ -9,10 +9,6 @@ Includes a docker-image [eugenmayer/whoami](https://hub.docker.com/r/eugenmayer/
 
 This way you can test single upstream server per docker image or multi-service upstreams, e.g. test segments with traefik and other load-balancers or whatever you build you example with.
 
-## build
-
-    make image 
-
 ## run
 ```
 docker run -p 80:80 eugenmayer/whoami:single
@@ -22,11 +18,11 @@ wget http://localhost:80
 
 or the multi-service variant using 
 ```    
-    docker run -p 80:80 -p 90:90 -p 100:100 eugenmayer/whoami:multiple
-    # access
-    wget http://localhost:80
-    wget http://localhost:90
-    wget http://localhost:100
+docker run -p 80:80 -p 90:90 -p 100:100 eugenmayer/whoami:multiple
+# access
+wget http://localhost:80
+wget http://localhost:90
+wget http://localhost:100
 ```
 
 The response looks like this            
@@ -41,3 +37,20 @@ Host: 0.0.0.0:32769
 User-Agent: curl/7.35.0
 Accept: */*
 ```
+
+
+## build
+
+    make image 
+    
+## develop
+
+Change `app.go` to your likings and then run 
+
+    make build
+
+And if those changes are valuable for all, why not create a pull request :)    
+        
+## Credits
+
+Credits to https://github.com/containous/whoami for providing the initial version
