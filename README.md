@@ -5,10 +5,11 @@ Usually to test load-balancer upstream setup or for example setup of such.
 
 Includes a docker-image [eugenmayer/whoami](https://hub.docker.com/r/eugenmayer/whoami) 
  - running one single service (port 80) [eugenmayer/whoami:single](https://hub.docker.com/r/eugenmayer/whoami)
- - running multiple service (port 80,90,100) [eugenmayer/whoami:multiple](https://hub.docker.com/r/eugenmayer/whoami)
+ - running multiple service (port 80,90,100,110) [eugenmayer/whoami:multiple](https://hub.docker.com/r/eugenmayer/whoami)
 
 This way you can test single upstream server per docker image or multi-service upstreams, e.g. test segments with traefik and other load-balancers or whatever you build you example with.
 
+The port 110 is special, since it is not exposed using `EXPOSE 110` for your tests without expose annotations
 ## run
 ```
 docker run -p 80:80 eugenmayer/whoami:single
@@ -18,11 +19,12 @@ wget http://localhost:80
 
 or the multi-service variant using 
 ```    
-docker run -p 80:80 -p 90:90 -p 100:100 eugenmayer/whoami:multiple
+docker run -p 80:80 -p 90:90 -p 100:100 -p 110:110 eugenmayer/whoami:multiple
 # access
 wget http://localhost:80
 wget http://localhost:90
 wget http://localhost:100
+wget http://localhost:110
 ```
 
 The response looks like this            
